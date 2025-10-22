@@ -54,13 +54,13 @@ describe('ChangeTracker', () => {
 
   it('should get changes since timestamp', async () => {
     const now = Date.now();
-    
+
     const doc1 = createDocument({ name: 'test1' });
     tracker.recordCreate(doc1);
-    
+
     // Wait a bit to ensure different timestamps
     await new Promise(resolve => setTimeout(resolve, 10));
-    
+
     const doc2 = createDocument({ name: 'test2' });
     tracker.recordUpdate(doc2);
 
@@ -95,7 +95,7 @@ describe('ChangeTracker', () => {
   it('should get changes by operation type', () => {
     const doc1 = createDocument({ name: 'test1' });
     const doc2 = createDocument({ name: 'test2' });
-    
+
     tracker.recordCreate(doc1);
     tracker.recordUpdate(doc2);
     tracker.recordDelete('doc-3');
@@ -115,8 +115,8 @@ describe('ChangeTracker', () => {
         operation: 'create' as const,
         data: { name: 'external' },
         version: { id: 'doc-2', timestamp: Date.now() },
-        localTimestamp: Date.now()
-      }
+        localTimestamp: Date.now(),
+      },
     ];
 
     tracker.mergeChanges(externalChanges);

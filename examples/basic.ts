@@ -6,9 +6,9 @@ import {
   SyncEngine, 
   MemoryStoreAdapter, 
   MockHttpTransportAdapter,
-  LastWriteWinsResolver
+  LastWriteWinsResolver,
+  SYNC_EVENT
 } from '../src/index';
-import { SYNC_EVENT, SYNC_OPERATION } from '../src/enums';
 
 async function basicExample() {
   console.log('🚀 Starting Basic Sync Engine Example\n');

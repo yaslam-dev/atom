@@ -9,6 +9,7 @@ import type { DocumentId, Document, ChangeRecord, Timestamp } from '../types';
  * Simple in-memory implementation of StoreAdapter
  * Useful for testing, demos, and temporary storage
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class MemoryStoreAdapter<T = any> implements StoreAdapter<T> {
   private documents = new Map<DocumentId, Document<T>>();
   private changes = new Map<DocumentId, ChangeRecord<T>>();
@@ -16,20 +17,22 @@ export class MemoryStoreAdapter<T = any> implements StoreAdapter<T> {
   private lastSyncTimestamp: Timestamp = 0;
 
   // Document operations
-  async get(id: DocumentId): Promise<Document<T> | null> {
-    return this.documents.get(id) ?? null;
+  get(id: DocumentId): Promise<Document<T> | null> {
+    return Promise.resolve(this.documents.get(id) ?? null);
   }
 
-  async put(document: Document<T>): Promise<void> {
+  put(document: Document<T>): Promise<void> {
     this.documents.set(document.id, { ...document });
+    return Promise.resolve();
   }
 
-  async delete(id: DocumentId): Promise<void> {
+  delete(id: DocumentId): Promise<void> {
     this.documents.delete(id);
+    return Promise.resolve();
   }
 
   // Batch operations
-  async getBatch(ids: DocumentId[]): Promise<Document<T>[]> {
+  getBatch(ids: DocumentId[]): Promise<Document<T>[]> {
     const results: Document<T>[] = [];
     for (const id of ids) {
       const doc = this.documents.get(id);
@@ -37,7 +40,7 @@ export class MemoryStoreAdapter<T = any> implements StoreAdapter<T> {
         results.push(doc);
       }
     }
-    return results;
+    return Promise.resolve(results);
   }
 
   async putBatch(documents: Document<T>[]): Promise<void> {
@@ -47,25 +50,26 @@ export class MemoryStoreAdapter<T = any> implements StoreAdapter<T> {
   }
 
   // Query operations
-  async getAll(): Promise<Document<T>[]> {
-    return Array.from(this.documents.values()).map(doc => ({ ...doc }));
+  getAll(): Promise<Document<T>[]> {
+    return Promise.resolve(Array.from(this.documents.values()).map(doc => ({ ...doc })));
   }
 
-  async getAllIds(): Promise<DocumentId[]> {
-    return Array.from(this.documents.keys());
+  getAllIds(): Promise<DocumentId[]> {
+    return Promise.resolve(Array.from(this.documents.keys()));
   }
 
   // Change tracking
-  async getChangesSince(timestamp: Timestamp): Promise<ChangeRecord<T>[]> {
-    return this.changeQueue.filter(change => change.localTimestamp > timestamp);
+  getChangesSince(timestamp: Timestamp): Promise<ChangeRecord<T>[]> {
+    return Promise.resolve(this.changeQueue.filter(change => change.localTimestamp > timestamp));
   }
 
-  async putChange(change: ChangeRecord<T>): Promise<void> {
+  putChange(change: ChangeRecord<T>): Promise<void> {
     this.changes.set(change.id, { ...change });
     this.changeQueue.push({ ...change });
+    return Promise.resolve();
   }
 
-  async clearChangesBefore(timestamp: Timestamp): Promise<void> {
+  clearChangesBefore(timestamp: Timestamp): Promise<void> {
     this.changeQueue = this.changeQueue.filter(change => change.localTimestamp >= timestamp);
 
     // Remove from changes map if the change is older than timestamp
@@ -74,15 +78,17 @@ export class MemoryStoreAdapter<T = any> implements StoreAdapter<T> {
         this.changes.delete(id);
       }
     }
+    return Promise.resolve();
   }
 
   // Metadata
-  async getLastSyncTimestamp(): Promise<Timestamp> {
-    return this.lastSyncTimestamp;
+  getLastSyncTimestamp(): Promise<Timestamp> {
+    return Promise.resolve(this.lastSyncTimestamp);
   }
 
-  async setLastSyncTimestamp(timestamp: Timestamp): Promise<void> {
+  setLastSyncTimestamp(timestamp: Timestamp): Promise<void> {
     this.lastSyncTimestamp = timestamp;
+    return Promise.resolve();
   }
 
   // Utility methods for testing and debugging

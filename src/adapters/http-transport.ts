@@ -24,6 +24,7 @@ export interface HttpTransportConfig {
 /**
  * HTTP transport adapter that communicates with a RESTful sync API
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class HttpTransportAdapter<T = any> implements TransportAdapter<T> {
   private readonly config: {
     baseUrl: string;
@@ -112,17 +113,18 @@ export class HttpTransportAdapter<T = any> implements TransportAdapter<T> {
     try {
       const response = await this.makeRequest('GET', this.config.endpoints.health, undefined, 5000);
       return response.ok;
-    } catch (error) {
+    } catch {
       return false;
     }
   }
 
   // Optional: implement for real-time sync
-  onRemoteChange?(callback: (changes: ChangeRecord<T>[]) => void): () => void {
+  onRemoteChange?(_callback: (changes: ChangeRecord<T>[]) => void): () => void {
     // This could be implemented using WebSockets, Server-Sent Events, or polling
     // For now, return a no-op unsubscribe function
+    // eslint-disable-next-line no-console
     console.warn('Real-time sync not implemented for HttpTransportAdapter');
-    return () => {};
+    return (): void => {};
   }
 
   private async makeRequest(
@@ -171,6 +173,7 @@ export class HttpTransportAdapter<T = any> implements TransportAdapter<T> {
 /**
  * Mock HTTP transport for testing and development
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export class MockHttpTransportAdapter<T = any> implements TransportAdapter<T> {
   private readonly mockDatabase = new Map<string, ChangeRecord<T>>();
   private readonly pushDelay: number;

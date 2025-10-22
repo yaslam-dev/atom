@@ -14,7 +14,16 @@ export default [
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        project: './tsconfig.json',
+        project: './tsconfig.vitest.json',
+      },
+      globals: {
+        console: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        fetch: 'readonly',
+        global: 'readonly',
+        Buffer: 'readonly',
+        process: 'readonly',
       },
     },
     plugins: {

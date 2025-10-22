@@ -26,6 +26,9 @@ export type * from './interfaces';
 // Utilities
 export * from './utils';
 
+// Enums
+export * from './enums';
+
 // Event system
 export * from './event-emitter';
 
