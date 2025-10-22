@@ -1,0 +1,23 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: "*.{ts,tsx}"
+      run: pnpm lint:fix
+      stage_fixed: true
+    typecheck-src:
+      glob: "src/**/*.{ts,tsx}"
+      run: pnpm type-check
+    typecheck-tests:
+      glob: "tests/**/*.{ts,tsx}"
+      run: pnpm type-check:tests
+    test:
+      run: pnpm test
+      
+pre-push:
+  parallel: true
+  commands:
+    quality:
+      run: pnpm quality
+    build:
+      run: pnpm build
