@@ -4,6 +4,11 @@ import tsparser from '@typescript-eslint/parser';
 import prettier from 'eslint-config-prettier';
 import prettierPlugin from 'eslint-plugin-prettier';
 import unusedImports from 'eslint-plugin-unused-imports';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export default [
   js.configs.recommended,
@@ -12,18 +17,26 @@ export default [
     languageOptions: {
       parser: tsparser,
       parserOptions: {
-        ecmaVersion: 'latest',
+        ecmaVersion: 2022,
         sourceType: 'module',
-        project: './tsconfig.vitest.json',
+        project: ['./tsconfig.json', './tsconfig.vitest.json'],
+        tsconfigRootDir: __dirname,
       },
       globals: {
         console: 'readonly',
         setTimeout: 'readonly',
         clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
         fetch: 'readonly',
         global: 'readonly',
         Buffer: 'readonly',
         process: 'readonly',
+        NodeJS: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        module: 'readonly',
+        require: 'readonly',
       },
     },
     plugins: {
