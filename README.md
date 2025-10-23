@@ -1,6 +1,5 @@
 <div align="center">
   <img src="./banner.png" alt="Atom" width="720" />
-  <h1>⚛️ Atom</h1>
   <p><em>A minimal, framework-agnostic sync engine for offline-first applications</em></p>
   <p>
     <a href="https://www.npmjs.com/package/sync-engine"><img alt="npm" src="https://img.shields.io/npm/v/sync-engine.svg"></a>
