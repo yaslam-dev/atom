@@ -2,14 +2,15 @@
  * Basic example showing how to use the sync engine
  */
 
-import { 
-  SyncEngine, 
-  MemoryStoreAdapter, 
+import {
+  SyncEngine,
+  MemoryStoreAdapter,
   MockHttpTransportAdapter,
   LastWriteWinsResolver,
-  SYNC_EVENT
+  SYNC_EVENT,
 } from '../src/index';
 
+// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 async function basicExample() {
   console.log('🚀 Starting Basic Sync Engine Example\n');
 
@@ -68,19 +69,19 @@ async function basicExample() {
 
   // Create some documents
   console.log('\n📝 Creating documents...');
-  const doc1 = await syncEngine.create({ 
-    title: 'My First Document', 
-    content: 'Hello, World!' 
+  const doc1 = await syncEngine.create({
+    title: 'My First Document',
+    content: 'Hello, World!'
   });
 
-  const doc2 = await syncEngine.create({ 
-    title: 'Shopping List', 
-    items: ['Milk', 'Bread', 'Eggs'] 
+  const doc2 = await syncEngine.create({
+    title: 'Shopping List',
+    items: ['Milk', 'Bread', 'Eggs']
   });
 
   // Update a document
   console.log('\n✏️  Updating document...');
-  await syncEngine.update(doc1.id, { 
+  await syncEngine.update(doc1.id, {
     title: 'My Updated Document',
     content: 'Hello, Sync Engine!',
     lastModified: new Date().toISOString()
@@ -96,7 +97,7 @@ async function basicExample() {
 
   // Wait a bit and show final state
   await new Promise(resolve => setTimeout(resolve, 1000));
-  
+
   console.log('\n📊 Final sync state:');
   console.log(syncEngine.getSyncState());
 
