@@ -16,7 +16,7 @@ export interface DocumentVersion {
 }
 
 // Document with metadata
-export interface Document<T = any> {
+export interface Document<T = unknown> {
   id: DocumentId;
   data: T;
   version: DocumentVersion;
@@ -27,7 +27,7 @@ export interface Document<T = any> {
 export type ChangeOperation = 'create' | 'update' | 'delete';
 
 // Individual change record
-export interface ChangeRecord<T = any> {
+export interface ChangeRecord<T = unknown> {
   id: DocumentId;
   operation: ChangeOperation;
   data: T | null; // null for deletes
@@ -36,7 +36,7 @@ export interface ChangeRecord<T = any> {
 }
 
 // Batch of changes for sync operations
-export interface ChangeBatch<T = any> {
+export interface ChangeBatch<T = unknown> {
   changes: ChangeRecord<T>[];
   lastSyncTimestamp?: Timestamp;
 }
@@ -51,7 +51,7 @@ export interface SyncState {
 }
 
 // Conflict information
-export interface ConflictInfo<T = any> {
+export interface ConflictInfo<T = unknown> {
   documentId: DocumentId;
   localVersion: DocumentVersion;
   remoteVersion: DocumentVersion;
@@ -60,7 +60,7 @@ export interface ConflictInfo<T = any> {
 }
 
 // Result of conflict resolution
-export interface ConflictResolution<T = any> {
+export interface ConflictResolution<T = unknown> {
   resolvedData: T;
   resolvedVersion: DocumentVersion;
 }

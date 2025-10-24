@@ -14,20 +14,20 @@ export enum SYNC_EVENT {
   DOCUMENT_CREATED = 'document:created',
   DOCUMENT_UPDATED = 'document:updated',
   DOCUMENT_DELETED = 'document:deleted',
-  
+
   // Sync events
   SYNC_STARTED = 'sync:started',
   SYNC_COMPLETED = 'sync:completed',
   SYNC_FAILED = 'sync:failed',
-  
+
   // Conflict events
   CONFLICT_DETECTED = 'conflict:detected',
   CONFLICT_RESOLVED = 'conflict:resolved',
-  
+
   // Connection events
   CONNECTION_ONLINE = 'connection:online',
   CONNECTION_OFFLINE = 'connection:offline',
-  
+
   // State events
   STATE_CHANGED = 'state:changed',
 }

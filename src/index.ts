@@ -1,19 +1,19 @@
 /**
  * Sync Engine - A minimal, framework-agnostic sync engine
- * 
+ *
  * @example
  * ```typescript
  * import { SyncEngine, MemoryStoreAdapter, HttpTransportAdapter } from 'sync-engine';
- * 
+ *
  * const store = new MemoryStoreAdapter();
  * const transport = new HttpTransportAdapter('https://api.example.com');
  * const syncEngine = new SyncEngine({ store, transport });
- * 
+ *
  * // Listen for sync events
  * syncEngine.on('sync:completed', ({ type, changeCount }) => {
  *   console.log(`${type} sync completed with ${changeCount} changes`);
  * });
- * 
+ *
  * // Start syncing
  * await syncEngine.start();
  * ```

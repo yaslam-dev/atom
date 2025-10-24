@@ -4,19 +4,20 @@
 
 import type { EventEmitter, SyncEvents } from './interfaces';
 
-export class SyncEventEmitter<T = any> implements EventEmitter<T> {
-  private listeners = new Map<keyof SyncEvents<T>, Set<Function>>();
+export class SyncEventEmitter<T = unknown> implements EventEmitter<T> {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+  private readonly listeners = new Map<keyof SyncEvents<T>, Set<Function>>();
 
   on<K extends keyof SyncEvents<T>>(
-    event: K, 
+    event: K,
     listener: (data: SyncEvents<T>[K]) => void
   ): () => void {
     if (!this.listeners.has(event)) {
       this.listeners.set(event, new Set());
     }
-    
+
     this.listeners.get(event)!.add(listener);
-    
+
     // Return unsubscribe function
     return () => {
       this.off(event, listener);
@@ -30,16 +31,14 @@ export class SyncEventEmitter<T = any> implements EventEmitter<T> {
         try {
           listener(data);
         } catch (error) {
+          // eslint-disable-next-line no-console
           console.error(`Error in event listener for ${String(event)}:`, error);
         }
       });
     }
   }
 
-  off<K extends keyof SyncEvents<T>>(
-    event: K, 
-    listener: (data: SyncEvents<T>[K]) => void
-  ): void {
+  off<K extends keyof SyncEvents<T>>(event: K, listener: (data: SyncEvents<T>[K]) => void): void {
     const eventListeners = this.listeners.get(event);
     if (eventListeners) {
       eventListeners.delete(listener);

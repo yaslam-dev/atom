@@ -2,19 +2,13 @@
  * Change tracking system for the sync engine
  */
 
-import type { 
-  Document, 
-  ChangeRecord, 
-  ChangeOperation, 
-  DocumentId, 
-  Timestamp 
-} from './types';
+import type { Document, ChangeRecord, ChangeOperation, DocumentId, Timestamp } from './types';
 import { now, createVersion } from './utils';
 
 /**
  * Tracks changes to documents for sync purposes
  */
-export class ChangeTracker<T = any> {
+export class ChangeTracker<T = unknown> {
   private changes = new Map<DocumentId, ChangeRecord<T>>();
   private changeQueue: ChangeRecord<T>[] = [];
 
@@ -27,7 +21,7 @@ export class ChangeTracker<T = any> {
       operation: 'create',
       data: document.data,
       version: document.version,
-      localTimestamp: now()
+      localTimestamp: now(),
     };
 
     this.addChange(change);
@@ -43,7 +37,7 @@ export class ChangeTracker<T = any> {
       operation: 'update',
       data: document.data,
       version: document.version,
-      localTimestamp: now()
+      localTimestamp: now(),
     };
 
     this.addChange(change);
@@ -59,7 +53,7 @@ export class ChangeTracker<T = any> {
       operation: 'delete',
       data: null,
       version,
-      localTimestamp: now()
+      localTimestamp: now(),
     };
 
     this.addChange(change);
@@ -72,7 +66,7 @@ export class ChangeTracker<T = any> {
   private addChange(change: ChangeRecord<T>): void {
     // Store the latest change for each document
     this.changes.set(change.id, change);
-    
+
     // Add to queue for batch processing
     this.changeQueue.push(change);
   }
@@ -103,9 +97,7 @@ export class ChangeTracker<T = any> {
    */
   clearChangesBefore(timestamp: Timestamp): void {
     // Remove from queue
-    this.changeQueue = this.changeQueue.filter(
-      change => change.localTimestamp >= timestamp
-    );
+    this.changeQueue = this.changeQueue.filter(change => change.localTimestamp >= timestamp);
 
     // Remove from changes map if the change is older than timestamp
     for (const [id, change] of this.changes.entries()) {
@@ -150,7 +142,7 @@ export class ChangeTracker<T = any> {
   mergeChanges(otherChanges: ChangeRecord<T>[]): void {
     for (const change of otherChanges) {
       const existingChange = this.changes.get(change.id);
-      
+
       // Only add if this change is newer or doesn't exist
       if (!existingChange || change.version.timestamp > existingChange.version.timestamp) {
         this.addChange(change);
@@ -167,7 +159,7 @@ export class ChangeTracker<T = any> {
   } {
     return {
       changes: Object.fromEntries(this.changes),
-      queue: [...this.changeQueue]
+      queue: [...this.changeQueue],
     };
   }
 

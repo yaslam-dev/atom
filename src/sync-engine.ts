@@ -306,7 +306,7 @@ export class SyncEngine<T = Record<string, unknown>> implements EventEmitter<T> 
       if (result.success) {
         // Handle any conflicts
         if (result.conflicts && result.conflicts.length > 0) {
-          await this.resolveConflicts(result.conflicts);
+          await this.resolveConflicts(result.conflicts as ConflictInfo<T>[]);
         }
 
         // Clear pushed changes
